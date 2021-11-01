@@ -52,7 +52,20 @@ foreach ($arrays as $array) {
     curl_close($ch);
 
 // output the $minified css
-    echo $minified;
+//    echo $minified;
+
+    $path = parse_url($_POST['input']);
+    $name = $path['path'];
+    $base = pathinfo($name);
+    $dir = $base['dirname'];
+    $newDir = substr($dir, 1);
+    if (!is_dir($newDir)) {
+        mkdir($newDir, 0700, true);
+    }
+    $newName = $base['filename'] . '.' . 'css';
+    $newFile = fopen($newDir . '/' . $newName, 'w');
+    fwrite($newFile, $minified);
+    fclose($newFile);
 }
 ?>
     </textarea>
